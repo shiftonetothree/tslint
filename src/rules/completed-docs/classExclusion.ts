@@ -27,6 +27,7 @@ import {
     PRIVACY_PRIVATE,
     PRIVACY_PROTECTED,
     PRIVACY_PUBLIC,
+    LOCATION_SIGNATURE,
 } from "../completedDocsRule";
 
 import { Exclusion } from "./exclusion";
@@ -51,6 +52,10 @@ export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
 
         if (hasModifier(node.modifiers, ts.SyntaxKind.StaticKeyword)) {
             return this.locations.has(LOCATION_STATIC);
+        }
+
+        if(node.kind === ts.SyntaxKind.PropertySignature){
+            return this.locations.has(LOCATION_SIGNATURE);
         }
 
         return this.locations.has(LOCATION_INSTANCE);

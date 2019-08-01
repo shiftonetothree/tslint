@@ -44,6 +44,7 @@ export const DESCRIPTOR_VISIBILITIES = "visibilities";
 
 export const LOCATION_INSTANCE = "instance";
 export const LOCATION_STATIC = "static";
+export const LOCATION_SIGNATURE = "signature";
 
 export const PRIVACY_PRIVATE = "private";
 export const PRIVACY_PROTECTED = "protected";
@@ -70,7 +71,7 @@ export type DocType =
     | typeof ARGUMENT_TYPES
     | typeof ARGUMENT_VARIABLES;
 
-export type Location = All | typeof LOCATION_INSTANCE | typeof LOCATION_STATIC;
+export type Location = All | typeof LOCATION_INSTANCE | typeof LOCATION_STATIC | typeof LOCATION_SIGNATURE;
 
 export type Privacy =
     | All
@@ -149,7 +150,7 @@ export class Rule extends Lint.Rules.AbstractRule {
                 },
             },
             [DESCRIPTOR_LOCATIONS]: {
-                enum: [ALL, LOCATION_INSTANCE, LOCATION_STATIC],
+                enum: [ALL, LOCATION_INSTANCE, LOCATION_STATIC, LOCATION_SIGNATURE],
                 type: "string",
             },
             [DESCRIPTOR_PRIVACIES]: {
@@ -200,6 +201,7 @@ export class Rule extends Lint.Rules.AbstractRule {
                         * \`"${ALL}"\`
                         * \`"${LOCATION_INSTANCE}"\`
                         * \`"${LOCATION_STATIC}"\`
+                        * \`"${LOCATION_SIGNATURE}"\`
                 * Other types may specify \`"${DESCRIPTOR_VISIBILITIES}"\`:
                     * \`"${ALL}"\`
                     * \`"${VISIBILITY_EXPORTED}"\`
@@ -569,6 +571,10 @@ function describeDocumentationFailure(node: ts.Node, docType: string): string {
         description += `${node.modifiers
             .map(modifier => describeModifier(modifier.kind))
             .join(" ")} `;
+    }
+
+    if(node.kind === ts.SyntaxKind.PropertySignature){
+        description += `signature `;
     }
 
     return `${description}${docType}.`;
