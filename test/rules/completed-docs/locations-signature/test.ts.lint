@@ -22,7 +22,7 @@ interface Interface{
     goodInterfaceProperty: number;
 
     badInterfaceProperty: number;
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for signature properties.]
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
 }
 
 type Type = {
@@ -32,5 +32,5 @@ type Type = {
     goodInterfaceProperty: number;
 
     badInterfaceProperty: number;
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for signature properties.]
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
 }

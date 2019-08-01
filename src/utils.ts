@@ -358,3 +358,55 @@ export function isFunctionScopeBoundary(node: ts.Node): boolean {
             return false;
     }
 }
+
+/**
+ * check the node if it have simple type declare.
+ * simple type declare is type only with string | number | null and so on
+ * 
+ * @author James Zhang
+ */
+export function haseSimpleTypeAnoying(node: ts.Node): boolean{
+    // console.log(node.getFullText());
+    let colonTokenPos = -1;
+    for(let i = 0;i<node.getChildCount();i++){
+        const childNode = node.getChildAt(i);
+        if(childNode.kind === ts.SyntaxKind.ColonToken){
+            colonTokenPos = i;
+            break;
+        }
+    }
+    if(colonTokenPos !== -1){
+        const typeNode = node.getChildAt(colonTokenPos + 1);
+        // console.log(typeNode.getFullText());
+        // console.log(this.isSimpleTypeNode(typeNode));
+        return isSimpleTypeNode(typeNode);
+    }else{
+        return true;
+    }
+}
+
+/**
+ * check the node if it is a simple type declare.
+ * simple type declare is type only with string | number | null and so on
+ * 
+ * @author James Zhang
+ */
+export function isSimpleTypeNode(node: ts.Node): boolean{
+    if(node.kind === ts.SyntaxKind.TypeReference
+        || node.kind === ts.SyntaxKind.TypeLiteral){
+        return false;
+    }else if(node.kind === ts.SyntaxKind.IntersectionType
+        || node.kind === ts.SyntaxKind.UnionType
+        || node.kind === ts.SyntaxKind.SyntaxList){
+        const children = node.getChildren();
+        for(const child of children){
+            // console.log(child.kind);
+            if(!isSimpleTypeNode(child)){
+                return false;
+            }
+        }
+        return true;
+    }else{
+        return true;
+    };
+}

@@ -1,0 +1,52 @@
+class Class {
+    badInstanceProperty = 1;
+    ~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    /**
+     * ...
+     */
+    goodInstanceProperty = 1;
+
+    /**
+     * ...
+     */
+    static badStaticProperty = 1;
+
+    static goodStaticProperty = 1;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for static properties.]
+
+}
+
+interface Interface{
+    /**
+     * ...
+     */
+    goodInterfaceProperty: number;
+
+    badInterfaceProperty: number;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+}
+
+type Type = {
+    /**
+     * ...
+     */
+    goodInterfaceProperty: number | string;
+
+    badInterfaceProperty: number | string;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    goodInterfaceProperty2: number & Interface;
+
+    goodInterfaceProperty2: number | { 
+        foo: number;
+        ~~~~~~~~~~~~       [Documentation must exist for properties.]
+        bar: { 
+            foo: number;
+            ~~~~~~~~~~~~       [Documentation must exist for properties.]
+        }
+    };
+
+    badInterfaceProperty: number;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+}

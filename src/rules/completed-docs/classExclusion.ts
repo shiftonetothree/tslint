@@ -28,9 +28,11 @@ import {
     PRIVACY_PROTECTED,
     PRIVACY_PUBLIC,
     LOCATION_SIGNATURE,
+    LOCATION_SIMPLY_TYPED,
 } from "../completedDocsRule";
 
 import { Exclusion } from "./exclusion";
+import { haseSimpleTypeAnoying } from '../../utils';
 
 export interface IClassExclusionDescriptor {
     locations?: Location[];
@@ -51,15 +53,32 @@ export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
         }
 
         if (hasModifier(node.modifiers, ts.SyntaxKind.StaticKeyword)) {
-            return this.locations.has(LOCATION_STATIC);
+            if(this.locations.has(LOCATION_STATIC)){
+                return true;
+            };
         }
 
-        if(node.kind === ts.SyntaxKind.PropertySignature){
-            return this.locations.has(LOCATION_SIGNATURE);
+        if((node.kind === ts.SyntaxKind.PropertySignature 
+            || node.kind === ts.SyntaxKind.PropertyDeclaration)){
+            if(haseSimpleTypeAnoying(node)){
+                if(this.locations.has(LOCATION_SIMPLY_TYPED)){
+                    return true;
+                };
+            }
+            if(node.kind === ts.SyntaxKind.PropertySignature){
+                if(this.locations.has(LOCATION_SIGNATURE)){
+                    return true;
+                };
+            } 
         }
 
-        return this.locations.has(LOCATION_INSTANCE);
+        if(!hasModifier(node.modifiers, ts.SyntaxKind.StaticKeyword)){
+            return this.locations.has(LOCATION_INSTANCE);
+        }
+
+        return false;
     }
+
 
     private shouldPrivacyBeDocumented(node: ts.Node) {
         if (this.privacies.has(ALL)) {
