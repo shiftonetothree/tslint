@@ -5,7 +5,7 @@
         "locations": ["instance"]
       },
       "properties": {
-        "locations": ["static", "signature"]
+        "locations": ["static"]
       }
     }]
   }

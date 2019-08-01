@@ -1,0 +1,36 @@
+class Class {
+    badInstanceProperty = 1;
+
+    /**
+     * ...
+     */
+    goodInstanceProperty = 1;
+
+    /**
+     * ...
+     */
+    static badStaticProperty = 1;
+
+    static goodStaticProperty = 1;
+
+}
+
+interface Interface{
+    /**
+     * ...
+     */
+    goodInterfaceProperty: number;
+
+    badInterfaceProperty: number;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for signature properties.]
+}
+
+type Type = {
+    /**
+     * ...
+     */
+    goodInterfaceProperty: number;
+
+    badInterfaceProperty: number;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for signature properties.]
+}

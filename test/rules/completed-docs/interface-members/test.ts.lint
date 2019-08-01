@@ -3,7 +3,7 @@
  */
 interface BadInterfaceMembers {
     prop: number;
-    ~~~~~~~~~~~~~                [Documentation must exist for properties.]
+    ~~~~~~~~~~~~~                [Documentation must exist for signature properties.]
     method(): number;
     ~~~~~~~~~~~~~~~~~            [Documentation must exist for methods.]
 }
@@ -16,7 +16,7 @@ interface EmptyInterfaceMembers {
      *
      */
     prop: number;
-    ~~~~~~~~~~~~~               [Documentation must exist for properties.]
+    ~~~~~~~~~~~~~               [Documentation must exist for signature properties.]
     /**
      *
      */
