@@ -18,22 +18,22 @@
 import { hasModifier } from "tsutils";
 import * as ts from "typescript";
 
+import { fixWith, haseSimpleTypeAnoying } from "../../utils";
 import {
     ALL,
+    Ignore,
     Location,
     LOCATION_INSTANCE,
+    LOCATION_SIGNATURE,
+    LOCATION_SIMPLY_TYPED,
     LOCATION_STATIC,
     Privacy,
     PRIVACY_PRIVATE,
     PRIVACY_PROTECTED,
     PRIVACY_PUBLIC,
-    LOCATION_SIGNATURE,
-    LOCATION_SIMPLY_TYPED,
-    Ignore,
 } from "../completedDocsRule";
 
 import { Exclusion } from "./exclusion";
-import { haseSimpleTypeAnoying, fixWith } from '../../utils';
 
 export interface IClassExclusionDescriptor {
     locations?: Location[];
@@ -56,44 +56,57 @@ export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
         }
 
         if (hasModifier(node.modifiers, ts.SyntaxKind.StaticKeyword)) {
-            if(this.locations.has(LOCATION_STATIC)){
+            if (this.locations.has(LOCATION_STATIC)) {
                 return true;
-            };
+            }
         }
+        const propertyOrMethod = new Set([
+            ts.SyntaxKind.PropertySignature,
+            ts.SyntaxKind.MethodSignature,
+            ts.SyntaxKind.PropertyDeclaration,
+            ts.SyntaxKind.MethodDeclaration,
+        ]);
 
-        if((node.kind === ts.SyntaxKind.PropertySignature 
-            || node.kind === ts.SyntaxKind.MethodSignature
-            || node.kind === ts.SyntaxKind.PropertyDeclaration
-            || node.kind === ts.SyntaxKind.MethodDeclaration)){
-            
-            if(this.ignores){
-                for(const ignore of this.ignores){
-                    if(fixWith(node as ts.MethodDeclaration | ts.MethodSignature | ts.PropertyDeclaration | ts.PropertySignature,
-                        ignore.prefix,ignore.suffix)){
+        if (propertyOrMethod.has(node.kind)) {
+            if (this.ignores !== undefined && this.ignores !== null) {
+                for (const ignore of this.ignores) {
+                    if (
+                        fixWith(
+                            node as
+                                | ts.MethodDeclaration
+                                | ts.MethodSignature
+                                | ts.PropertyDeclaration
+                                | ts.PropertySignature,
+                            ignore.prefix,
+                            ignore.suffix,
+                        )
+                    ) {
                         return false;
-                    };
+                    }
                 }
             }
-            
-            if(haseSimpleTypeAnoying(node)){
-                if(this.locations.has(LOCATION_SIMPLY_TYPED)){
+
+            if (haseSimpleTypeAnoying(node)) {
+                if (this.locations.has(LOCATION_SIMPLY_TYPED)) {
                     return true;
-                };
+                }
             }
-            if(node.kind === ts.SyntaxKind.PropertySignature || node.kind === ts.SyntaxKind.MethodSignature){
-                if(this.locations.has(LOCATION_SIGNATURE)){
+            if (
+                node.kind === ts.SyntaxKind.PropertySignature ||
+                node.kind === ts.SyntaxKind.MethodSignature
+            ) {
+                if (this.locations.has(LOCATION_SIGNATURE)) {
                     return true;
-                };
-            } 
+                }
+            }
         }
 
-        if(!hasModifier(node.modifiers, ts.SyntaxKind.StaticKeyword)){
+        if (!hasModifier(node.modifiers, ts.SyntaxKind.StaticKeyword)) {
             return this.locations.has(LOCATION_INSTANCE);
         }
 
         return false;
     }
-
 
     private shouldPrivacyBeDocumented(node: ts.Node) {
         if (this.privacies.has(ALL)) {

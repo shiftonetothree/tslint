@@ -72,9 +72,17 @@ export type DocType =
     | typeof ARGUMENT_TYPES
     | typeof ARGUMENT_VARIABLES;
 
-export type Location = All | typeof LOCATION_INSTANCE | typeof LOCATION_STATIC | typeof LOCATION_SIGNATURE | typeof LOCATION_SIMPLY_TYPED;
+export type Location =
+    | All
+    | typeof LOCATION_INSTANCE
+    | typeof LOCATION_STATIC
+    | typeof LOCATION_SIGNATURE
+    | typeof LOCATION_SIMPLY_TYPED;
 
-export type Ignore = {prefix?: string, suffix?: string};
+export interface Ignore {
+    prefix?: string;
+    suffix?: string;
+}
 
 export type Privacy =
     | All
@@ -153,7 +161,13 @@ export class Rule extends Lint.Rules.AbstractRule {
                 },
             },
             [DESCRIPTOR_LOCATIONS]: {
-                enum: [ALL, LOCATION_INSTANCE, LOCATION_STATIC, LOCATION_SIGNATURE, LOCATION_SIMPLY_TYPED],
+                enum: [
+                    ALL,
+                    LOCATION_INSTANCE,
+                    LOCATION_STATIC,
+                    LOCATION_SIGNATURE,
+                    LOCATION_SIMPLY_TYPED,
+                ],
                 type: "string",
             },
             [DESCRIPTOR_PRIVACIES]: {
@@ -576,7 +590,7 @@ function describeDocumentationFailure(node: ts.Node, docType: string): string {
             .map(modifier => describeModifier(modifier.kind))
             .join(" ")} `;
     }
-    
+
     return `${description}${docType}.`;
 }
 

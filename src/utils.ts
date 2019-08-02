@@ -362,25 +362,25 @@ export function isFunctionScopeBoundary(node: ts.Node): boolean {
 /**
  * check the node if it have simple type declare.
  * simple type declare is type only with string | number | null and so on
- * 
+ *
  * @author James Zhang
  */
-export function haseSimpleTypeAnoying(node: ts.Node): boolean{
+export function haseSimpleTypeAnoying(node: ts.Node): boolean {
     // console.log(node.getFullText());
     let colonTokenPos = -1;
-    for(let i = 0;i<node.getChildCount();i++){
+    for (let i = 0; i < node.getChildCount(); i++) {
         const childNode = node.getChildAt(i);
-        if(childNode.kind === ts.SyntaxKind.ColonToken){
+        if (childNode.kind === ts.SyntaxKind.ColonToken) {
             colonTokenPos = i;
             break;
         }
     }
-    if(colonTokenPos !== -1){
+    if (colonTokenPos !== -1) {
         const typeNode = node.getChildAt(colonTokenPos + 1);
         // console.log(typeNode.getFullText());
         // console.log(this.isSimpleTypeNode(typeNode));
         return isSimpleTypeNode(typeNode);
-    }else{
+    } else {
         return true;
     }
 }
@@ -388,47 +388,50 @@ export function haseSimpleTypeAnoying(node: ts.Node): boolean{
 /**
  * check the node if it is a simple type declare.
  * simple type declare is type only with string | number | null and so on.
- * 
+ *
  * @author James Zhang
  */
-export function isSimpleTypeNode(node: ts.Node): boolean{
-    if(node.kind === ts.SyntaxKind.TypeReference
-        || node.kind === ts.SyntaxKind.TypeLiteral){
+export function isSimpleTypeNode(node: ts.Node): boolean {
+    const unionTypes = new Set([
+        ts.SyntaxKind.IntersectionType,
+        ts.SyntaxKind.UnionType,
+        ts.SyntaxKind.SyntaxList,
+    ]);
+    if (node.kind === ts.SyntaxKind.TypeReference || node.kind === ts.SyntaxKind.TypeLiteral) {
         return false;
-    }else if(node.kind === ts.SyntaxKind.IntersectionType
-        || node.kind === ts.SyntaxKind.UnionType
-        || node.kind === ts.SyntaxKind.SyntaxList){
+    } else if (unionTypes.has(node.kind)) {
         const children = node.getChildren();
-        for(const child of children){
+        for (const child of children) {
             // console.log(child.kind);
-            if(!isSimpleTypeNode(child)){
+            if (!isSimpleTypeNode(child)) {
                 return false;
             }
         }
         return true;
-    }else{
+    } else {
         return true;
-    };
+    }
 }
 
 /**
  * check if the node name have prefix and suffix.
- * 
+ *
  * @author James Zhang
  */
 export function fixWith(
     node: ts.MethodDeclaration | ts.MethodSignature | ts.PropertyDeclaration | ts.PropertySignature,
-    prefix?: string,suffix?: string): boolean{
+    prefix?: string,
+    suffix?: string,
+): boolean {
     const name = node.name.getText();
-    if(prefix !== undefined){
-        if(name.indexOf(prefix) !== 0){
+    if (prefix !== undefined) {
+        if (name.indexOf(prefix) !== 0) {
             return false;
         }
-        
     }
 
-    if(suffix !== undefined){
-        if(name.indexOf(suffix) !== name.length - suffix.length){
+    if (suffix !== undefined) {
+        if (name.indexOf(suffix) !== name.length - suffix.length) {
             return false;
         }
     }
