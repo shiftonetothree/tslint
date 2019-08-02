@@ -41,6 +41,13 @@ export interface IClassExclusionDescriptor {
     ignores?: Ignore[];
 }
 
+const propertyOrMethod = new Set([
+    ts.SyntaxKind.PropertySignature,
+    ts.SyntaxKind.MethodSignature,
+    ts.SyntaxKind.PropertyDeclaration,
+    ts.SyntaxKind.MethodDeclaration,
+]);
+
 export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
     public readonly locations: Set<Location> = this.createSet(this.descriptor.locations);
     public readonly ignores: Ignore[] | undefined = this.descriptor.ignores;
@@ -60,12 +67,6 @@ export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
                 return true;
             }
         }
-        const propertyOrMethod = new Set([
-            ts.SyntaxKind.PropertySignature,
-            ts.SyntaxKind.MethodSignature,
-            ts.SyntaxKind.PropertyDeclaration,
-            ts.SyntaxKind.MethodDeclaration,
-        ]);
 
         if (propertyOrMethod.has(node.kind)) {
             if (this.ignores !== undefined && this.ignores !== null) {

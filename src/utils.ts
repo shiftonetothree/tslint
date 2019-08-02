@@ -385,6 +385,14 @@ export function haseSimpleTypeAnoying(node: ts.Node): boolean {
     }
 }
 
+/** 组合类型 */
+const composeType = new Set([
+    ts.SyntaxKind.IntersectionType,
+    ts.SyntaxKind.UnionType,
+    ts.SyntaxKind.SyntaxList,
+    ts.SyntaxKind.ArrayType,
+]);
+
 /**
  * check the node if it is a simple type declare.
  * simple type declare is type only with string | number | null and so on.
@@ -392,17 +400,11 @@ export function haseSimpleTypeAnoying(node: ts.Node): boolean {
  * @author James Zhang
  */
 export function isSimpleTypeNode(node: ts.Node): boolean {
-    const unionTypes = new Set([
-        ts.SyntaxKind.IntersectionType,
-        ts.SyntaxKind.UnionType,
-        ts.SyntaxKind.SyntaxList,
-    ]);
     if (node.kind === ts.SyntaxKind.TypeReference || node.kind === ts.SyntaxKind.TypeLiteral) {
         return false;
-    } else if (unionTypes.has(node.kind)) {
+    } else if (composeType.has(node.kind)) {
         const children = node.getChildren();
         for (const child of children) {
-            // console.log(child.kind);
             if (!isSimpleTypeNode(child)) {
                 return false;
             }

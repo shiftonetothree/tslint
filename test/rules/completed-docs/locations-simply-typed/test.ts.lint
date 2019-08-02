@@ -52,7 +52,7 @@ type Type = {
 
     goodInterfaceProperty2: number & Interface;
 
-    goodInterfaceProperty2: number | { 
+    badInterfaceProperty2: number | { 
         foo: number;
         ~~~~~~~~~~~~       [Documentation must exist for properties.]
         bar: { 
@@ -60,6 +60,10 @@ type Type = {
             ~~~~~~~~~~~~       [Documentation must exist for properties.]
         }
     };
+
+    goodInterfaceProperty3: Interface[];
+
+    goodInterfaceProperty4: Array<Interface>;
 
     badInterfaceProperty: number;
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
