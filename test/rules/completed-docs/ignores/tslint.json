@@ -1,0 +1,30 @@
+{
+  "rules": {
+    "completed-docs": [true, {
+      "methods":{
+        "locations": ["simply-typed"],
+        "ignores":[
+          {
+            "prefix": "render"
+          },
+          {
+            "prefix": "get", 
+            "suffix": "Data"
+          }
+        ]
+      },
+      "properties": {
+        "locations": ["simply-typed"],
+        "ignores":[
+          {
+            "prefix": "name" 
+          },
+          {
+            "prefix": "key", 
+            "suffix": "key"
+          }
+        ]
+      }
+    }]
+  }
+}

@@ -74,6 +74,8 @@ export type DocType =
 
 export type Location = All | typeof LOCATION_INSTANCE | typeof LOCATION_STATIC | typeof LOCATION_SIGNATURE | typeof LOCATION_SIMPLY_TYPED;
 
+export type Ignore = {prefix?: string, suffix?: string};
+
 export type Privacy =
     | All
     | typeof PRIVACY_PRIVATE

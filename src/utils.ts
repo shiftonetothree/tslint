@@ -387,7 +387,7 @@ export function haseSimpleTypeAnoying(node: ts.Node): boolean{
 
 /**
  * check the node if it is a simple type declare.
- * simple type declare is type only with string | number | null and so on
+ * simple type declare is type only with string | number | null and so on.
  * 
  * @author James Zhang
  */
@@ -409,4 +409,28 @@ export function isSimpleTypeNode(node: ts.Node): boolean{
     }else{
         return true;
     };
+}
+
+/**
+ * check if the node name have prefix and suffix.
+ * 
+ * @author James Zhang
+ */
+export function fixWith(
+    node: ts.MethodDeclaration | ts.MethodSignature | ts.PropertyDeclaration | ts.PropertySignature,
+    prefix?: string,suffix?: string): boolean{
+    const name = node.name.getText();
+    if(prefix !== undefined){
+        if(name.indexOf(prefix) !== 0){
+            return false;
+        }
+        
+    }
+
+    if(suffix !== undefined){
+        if(name.indexOf(suffix) !== name.length - suffix.length){
+            return false;
+        }
+    }
+    return true;
 }

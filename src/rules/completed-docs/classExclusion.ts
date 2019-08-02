@@ -29,18 +29,21 @@ import {
     PRIVACY_PUBLIC,
     LOCATION_SIGNATURE,
     LOCATION_SIMPLY_TYPED,
+    Ignore,
 } from "../completedDocsRule";
 
 import { Exclusion } from "./exclusion";
-import { haseSimpleTypeAnoying } from '../../utils';
+import { haseSimpleTypeAnoying, fixWith } from '../../utils';
 
 export interface IClassExclusionDescriptor {
     locations?: Location[];
     privacies?: Privacy[];
+    ignores?: Ignore[];
 }
 
 export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
     public readonly locations: Set<Location> = this.createSet(this.descriptor.locations);
+    public readonly ignores: Ignore[] | undefined = this.descriptor.ignores;
     public readonly privacies: Set<Privacy> = this.createSet(this.descriptor.privacies);
 
     public excludes(node: ts.Node) {
@@ -62,6 +65,16 @@ export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
             || node.kind === ts.SyntaxKind.MethodSignature
             || node.kind === ts.SyntaxKind.PropertyDeclaration
             || node.kind === ts.SyntaxKind.MethodDeclaration)){
+            
+            if(this.ignores){
+                for(const ignore of this.ignores){
+                    if(fixWith(node as ts.MethodDeclaration | ts.MethodSignature | ts.PropertyDeclaration | ts.PropertySignature,
+                        ignore.prefix,ignore.suffix)){
+                        return false;
+                    };
+                }
+            }
+            
             if(haseSimpleTypeAnoying(node)){
                 if(this.locations.has(LOCATION_SIMPLY_TYPED)){
                     return true;

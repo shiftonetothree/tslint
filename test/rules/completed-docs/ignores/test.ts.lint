@@ -1,0 +1,125 @@
+class Class {
+    badInstanceProperty = 1;
+    ~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    /**
+     * ...
+     */
+    goodInstanceProperty = 1;
+
+    /**
+     * ...
+     */
+    static badStaticProperty = 1;
+
+    static goodStaticProperty = 1;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for static properties.]
+
+    static name = 1;
+
+    key = 1;
+
+    /**
+     * ...
+     */
+    goodClassMethod(param: number) {
+        return param;
+    };
+
+    badClassMethod(param: number) {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for methods.]
+        return param;
+    };
+
+    renderMethod(param: number) {
+        return param;
+    };
+
+    getSomeData(param: number) {
+        return param;
+    };
+
+    querySomeData(param: number) {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for methods.]
+        return param;
+    };
+
+    nameSomeThing = (param: number) => {
+        return param;
+    };
+
+}
+
+interface Interface{
+    /**
+     * ...
+     */
+    goodInterfaceProperty: number;
+
+    badInterfaceProperty: number;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    key: number;
+}
+
+type MethodType = (param:number) => number;
+
+type Type = {
+    /**
+     * ...
+     */
+    goodInterfaceProperty: number | string;
+
+    badInterfaceProperty: number | string;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    goodInterfaceProperty2: number & Interface;
+
+    goodInterfaceProperty2: number | { 
+        foo: number;
+        ~~~~~~~~~~~~       [Documentation must exist for properties.]
+        bar: { 
+            foo: number;
+            ~~~~~~~~~~~~       [Documentation must exist for properties.]
+        }
+    };
+
+    badInterfaceProperty: number;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    /**
+     * ...
+     */
+    goodInterfaceMethod(param: number): number;
+
+    badInterfaceMethod(param: number): number;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for methods.]
+
+
+    /**
+     * ...
+     */
+    goodInterfaceMethod2: (param: number)=> number;
+
+    badInterfaceMethod2: (param: number)=> number;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    /**
+     * ...
+     */
+    badInterfaceMethod3: MethodType;
+
+    goodInterfaceMethod3: MethodType;
+
+    key: number;
+
+    renderMethod(param: number): number;
+
+    getSomeData(param: number): number;
+
+    querySomeData(param: number): number;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for methods.]
+
+    nameSomeThing: (param: number) =>  number;
+}
+
