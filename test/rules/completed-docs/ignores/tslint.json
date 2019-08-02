@@ -3,6 +3,7 @@
     "completed-docs": [true, {
       "methods":{
         "locations": ["all"],
+        "privacies": ["all"],
         "ignores":[
           {
             "prefix": "render"

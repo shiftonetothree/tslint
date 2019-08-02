@@ -44,9 +44,21 @@ class Class {
         return param;
     };
 
+    async querySomeData2(param: number) {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for async methods.]
+        return param;
+    };
+
     nameSomeThing = (param: number) => {
         return param;
     };
+
+    saveSomeThing = async (p: number) => {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+        return new Promise((resolve) => {
+            resolve(p);
+        });
+    }
 
 }
 
