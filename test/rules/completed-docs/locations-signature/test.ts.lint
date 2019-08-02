@@ -1,18 +1,19 @@
 class Class {
     badInstanceProperty = 1;
 
-    /**
-     * ...
-     */
     goodInstanceProperty = 1;
 
-    /**
-     * ...
-     */
     static badStaticProperty = 1;
 
     static goodStaticProperty = 1;
 
+    badClassMethod(param: number) {
+        return param;
+    };
+
+    goodClassMethod(param: number) {
+        return param;
+    };
 }
 
 interface Interface{
@@ -33,4 +34,12 @@ type Type = {
 
     badInterfaceProperty: number;
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    /**
+     * ...
+     */
+    goodInterfaceMethod(param: number): number;
+
+    badInterfaceMethod(param: number): number;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for methods.]
 }

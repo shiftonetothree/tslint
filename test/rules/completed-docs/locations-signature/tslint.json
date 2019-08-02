@@ -1,6 +1,9 @@
 {
   "rules": {
     "completed-docs": [true, {
+      "methods":{
+        "locations": ["signature"]
+      },
       "properties": {
         "locations": ["signature"]
       }

@@ -59,13 +59,15 @@ export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
         }
 
         if((node.kind === ts.SyntaxKind.PropertySignature 
-            || node.kind === ts.SyntaxKind.PropertyDeclaration)){
+            || node.kind === ts.SyntaxKind.MethodSignature
+            || node.kind === ts.SyntaxKind.PropertyDeclaration
+            || node.kind === ts.SyntaxKind.MethodDeclaration)){
             if(haseSimpleTypeAnoying(node)){
                 if(this.locations.has(LOCATION_SIMPLY_TYPED)){
                     return true;
                 };
             }
-            if(node.kind === ts.SyntaxKind.PropertySignature){
+            if(node.kind === ts.SyntaxKind.PropertySignature || node.kind === ts.SyntaxKind.MethodSignature){
                 if(this.locations.has(LOCATION_SIGNATURE)){
                     return true;
                 };
