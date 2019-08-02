@@ -54,12 +54,32 @@ export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
     public readonly privacies: Set<Privacy> = this.createSet(this.descriptor.privacies);
 
     public excludes(node: ts.Node) {
-        return !(this.shouldLocationBeDocumented(node) && this.shouldPrivacyBeDocumented(node));
+        return !(
+            this.shouldIgnoresBeDocumented(node) &&
+            this.shouldLocationBeDocumented(node) &&
+            this.shouldPrivacyBeDocumented(node)
+        );
     }
 
     private shouldLocationBeDocumented(node: ts.Node) {
         if (this.locations.has(ALL)) {
             return true;
+        }
+
+        if (propertyOrMethod.has(node.kind)) {
+            if (haseSimpleTypeAnoying(node)) {
+                if (this.locations.has(LOCATION_SIMPLY_TYPED)) {
+                    return true;
+                }
+            }
+            if (
+                node.kind === ts.SyntaxKind.PropertySignature ||
+                node.kind === ts.SyntaxKind.MethodSignature
+            ) {
+                if (this.locations.has(LOCATION_SIGNATURE)) {
+                    return true;
+                }
+            }
         }
 
         if (hasModifier(node.modifiers, ts.SyntaxKind.StaticKeyword)) {
@@ -68,6 +88,14 @@ export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
             }
         }
 
+        if (!hasModifier(node.modifiers, ts.SyntaxKind.StaticKeyword)) {
+            return this.locations.has(LOCATION_INSTANCE);
+        }
+
+        return false;
+    }
+
+    private shouldIgnoresBeDocumented(node: ts.Node) {
         if (propertyOrMethod.has(node.kind)) {
             if (this.ignores !== undefined && this.ignores !== null) {
                 for (const ignore of this.ignores) {
@@ -86,27 +114,8 @@ export class ClassExclusion extends Exclusion<IClassExclusionDescriptor> {
                     }
                 }
             }
-
-            if (haseSimpleTypeAnoying(node)) {
-                if (this.locations.has(LOCATION_SIMPLY_TYPED)) {
-                    return true;
-                }
-            }
-            if (
-                node.kind === ts.SyntaxKind.PropertySignature ||
-                node.kind === ts.SyntaxKind.MethodSignature
-            ) {
-                if (this.locations.has(LOCATION_SIGNATURE)) {
-                    return true;
-                }
-            }
         }
-
-        if (!hasModifier(node.modifiers, ts.SyntaxKind.StaticKeyword)) {
-            return this.locations.has(LOCATION_INSTANCE);
-        }
-
-        return false;
+        return true;
     }
 
     private shouldPrivacyBeDocumented(node: ts.Node) {
