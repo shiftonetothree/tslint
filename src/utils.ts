@@ -413,7 +413,6 @@ export function isSimpleTypeNode(node: ts.Node): boolean {
         }
         return true;
     } else {
-        console.log(node.getFullText(),node.kind);
         return true;
     }
 }
