@@ -400,7 +400,9 @@ const composeType = new Set([
  * @author James Zhang
  */
 export function isSimpleTypeNode(node: ts.Node): boolean {
-    if (node.kind === ts.SyntaxKind.TypeReference || node.kind === ts.SyntaxKind.TypeLiteral) {
+    if (node.kind === ts.SyntaxKind.TypeReference || 
+        node.kind === ts.SyntaxKind.TypeLiteral || 
+        node.kind === ts.SyntaxKind.LiteralType) {
         return false;
     } else if (composeType.has(node.kind)) {
         const children = node.getChildren();
@@ -411,6 +413,7 @@ export function isSimpleTypeNode(node: ts.Node): boolean {
         }
         return true;
     } else {
+        console.log(node.getFullText(),node.kind);
         return true;
     }
 }

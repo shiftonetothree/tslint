@@ -50,6 +50,8 @@ type Type = {
     badInterfaceProperty: number | string;
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
 
+    goodInterfaceTheme: "light" | "dark";
+
     goodInterfaceProperty2: number & Interface;
 
     badInterfaceProperty2: number | { 
