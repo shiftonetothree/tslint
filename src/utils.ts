@@ -366,7 +366,6 @@ export function isFunctionScopeBoundary(node: ts.Node): boolean {
  * @author James Zhang
  */
 export function haseSimpleTypeAnoying(node: ts.Node): boolean {
-    // console.log(node.getFullText());
     let colonTokenPos = -1;
     for (let i = 0; i < node.getChildCount(); i++) {
         const childNode = node.getChildAt(i);
@@ -377,11 +376,41 @@ export function haseSimpleTypeAnoying(node: ts.Node): boolean {
     }
     if (colonTokenPos !== -1) {
         const typeNode = node.getChildAt(colonTokenPos + 1);
-        // console.log(typeNode.getFullText());
-        // console.log(this.isSimpleTypeNode(typeNode));
         return isSimpleTypeNode(typeNode);
+    }
+
+    let assignTokenPos = -1;
+    for (let i = 0; i < node.getChildCount(); i++) {
+        const childNode = node.getChildAt(i);
+        if (childNode.kind === ts.SyntaxKind.EqualsToken) {
+            assignTokenPos = i;
+            break;
+        }
+    }
+    if (assignTokenPos !== -1) {
+        const valueNode = node.getChildAt(assignTokenPos + 1);
+        return isSimpleTypeAssignNode(valueNode);
     } else {
         return true;
+    }
+}
+
+/**
+ * check the node if it is a simple type literal expression.
+ * ts.SyntaxKind.TaggedTemplateExpression and ts.SyntaxKind.NewExpression and ts.SyntaxKind.CallExpression are not simple.
+ *
+ * @author James Zhang
+ */
+export function isSimpleTypeAssignNode(node: ts.Node) {
+    switch (node.kind) {
+        case ts.SyntaxKind.TaggedTemplateExpression:
+            return false;
+        case ts.SyntaxKind.NewExpression:
+            return false;
+        case ts.SyntaxKind.CallExpression:
+            return false;
+        default:
+            return true;
     }
 }
 

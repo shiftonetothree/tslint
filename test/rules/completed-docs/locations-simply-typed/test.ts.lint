@@ -2,10 +2,66 @@ class Class {
     badInstanceProperty = 1;
     ~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
 
+    badInstanceProperty2 = "1";
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    badInstanceProperty22 = `1`;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    badInstanceProperty3 = true;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    badInstanceProperty4 = false;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    badInstanceProperty5 = [false, false];
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    badInstanceProperty53 = [new Class(), false];
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    badInstanceProperty51 = {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+        a: 1,
+        b: new Class()
+    };
+
+    badInstanceProperty52 = {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+        a: 1,
+        b: 2
+    };
+    
+
+    badInstanceProperty6 = true && false;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    badInstanceProperty7 = 1 && 2;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    badInstanceProperty8 = true || false;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    badInstanceProperty9 = 1 > 2;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
+    badInstanceProperty10 = plus(1,1);
+
+    badInstanceProperty11 = 1 === 2 ? 1 : 2;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [Documentation must exist for properties.]
+
     /**
      * ...
      */
     goodInstanceProperty = 1;
+
+    goodInstanceProperty2 = styled.div`
+        .class-mame{ 
+            color: red;
+        }
+    `;
+
+    goodInstanceProperty3 = new Class();
 
     /**
      * ...
